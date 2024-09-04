@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-database.js"></script>
+
+    
+
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./output.css">
+    <title>Light Heart User Login</title>
+    
+</head>
+
+<body>
+    <section class="flex items-center justify-center">
+        <div class="headerImgDiv">
+            <img class="h-24 sm:h-32 my-16 mx-auto" src="LH_MainLogo_Black.png" alt="Light Heart Company Logo">
+        </div>
+    </section>
+    
+<!--Form Section-->
+<section class="flex items-center justify-center sm:flex">
+    <div class="bg-[#d3bfb2] py-16 flex rounded-2xl shadow-lg max-w-3xl mx-auto sm:max-w-none sm:px-8">
+        <div class="px-32 sm:px-32">
+            <!--Login Header-->
+            <h2 class="justify-center font-bold text-3xl sm:justify-center text-white">Login</h2>
+
+            <!--Form Inputs Email and Password-->
+            <form action="" id="form" class="flex flex-col gap-4 pb-6 sm:flex">
+                <input class="p-2 rounded-xl sm:p-2 mt-8" type="email" name="userLoginEmail" id="userLoginEmail" placeholder="Enter Email">
+                <!-- <input class="px-2 mt-2 rounded-xl sm:p-2" type="password" name="password" id="userLoginPassword" placeholder="Enter Password"> -->
+                
+                <!--Login Button-->
+                <input 
+                type ="submit" value="Login"  id="submit" 
+                class="bg-[#746253] rounded-xl text-white p-2 sm:py-2 hover:scale-105 duration-300 mt-5">
+
+                <a href="userLoginOptions.html"><u>Existing/New User</u></a> 
+            </form>
+            <!-- End Form Inputs Email and Password-->
+        </div>
+    </div>
+</section>
+    
+</body>
+
+<!--Session Storage for email-->
+<!--Email input is going to transfer to userProfile.html-->
+
+<script src="emailAuth.js"></script>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="./output.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" 
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" 
+      crossorigin=""/>
+</head>
+<body class="bodyStyle">
+    <div id="overlay" class="overlayStyle">
+        <h3 class="headerStyle">Find An Artist</h3>
+        <h4 class="subHeaderStyle">Tap a marker on the map to find a Light Heart Certified Artist near you.</h4>
+        <div id="arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="arrowStyle">
+                <path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z" clip-rule="evenodd" />
+            </svg>
+        </div>
+        <p id="additionalText" class="hiddenText hidden">
+            Want to add your business to this map? Just log into any of your Light Heart courses and go to the lesson titled "Get On Our Map!"
+        </p>
+        </div>
+            <div id="buttonContainer" class="buttonContainer hidden">
+                <a id="button1" href="https://lightheartlash.com/" class="buttonStyle hidden">Take A Course</a>
+                <a id="button2" href="https://lightheartlash.com/my-courses/" class="buttonStyle hidden">Log In To Add Your Business</a>
+
+    </div>
+
+    <!-- The div element for the map -->
+    <div id="mapid" class="mapStyle" style="height: 500px;"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin="">
+    </script>
+    <script>
+        
+
+
+
+
+
+        // Firebase configuration
+                // Firebase configuration
+                var firebaseConfig = {
+            apiKey: "AIzaSyDKYTsPByglKMWhqrL_W-dSUHgDUXbm4Zg",
+            authDomain: "lightheartlashdb.firebaseapp.com",
+            databaseURL: "https://lightheartlashdb-default-rtdb.firebaseio.com",
+            projectId: "lightheartlashdb",
+            storageBucket: "lightheartlashdb.appspot.com",
+            messagingSenderId: "187026496730",
+            appId: "1:187026496730:web:686b35e7ccdda56d0bd9e3",
+            measurementId: "G-8GRD32LYV9"
+        };
+
+
+        // Initialize Firebase
+        var app = firebase.initializeApp(firebaseConfig);
+        var database = firebase.database(app);
+
+        window.onload = function() {
+            var arrowElement = document.getElementById('arrow');
+
+                if (arrowElement) {
+                    arrowElement.addEventListener('click', function() {
+                        var additionalText = document.getElementById('additionalText');
+                        var button1 = document.getElementById('button1');
+                        var button2 = document.getElementById('button2');
+
+                        if (additionalText.classList.contains('block')) {
+                            additionalText.classList.remove('block');
+                            additionalText.classList.add('hidden');
+                            button1.classList.remove('block');
+                            button1.classList.add('hidden');
+                            button2.classList.remove('block');
+                            button2.classList.add('hidden');
+
+                        } else {
+                            additionalText.classList.remove('hidden');
+                            additionalText.classList.add('block');
+                            button1.classList.remove('hidden');
+                            button1.classList.add('block');
+                            button2.classList.remove('hidden');
+                            button2.classList.add('block');
+
+                        }
+                        });
+                } else {
+                    console.log("'arrow' element not found in the DOM.");
+                }
+            // Initialize Leaflet map
+            var map = L.map('mapid').setView([33.581391, -111.930714], 5);
+
+            // Add OpenStreetMap tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Fetch users from Firebase and add markers to the map
+            var usersRef = firebase.database().ref('users');
+            usersRef.once('value').then(function(snapshot) {
+                var users = snapshot.val();
+                for (var userId in users) {
+                    var user = users[userId];
+                    var businessInfo = user.businessInfo;
+                    var courses = user.courses;
+
+                    // Check if user has geocoded coordinates
+                    if (!businessInfo.businessLocation) {
+                        console.log(`No location data for user: ${userId}`);
+                        continue;
+                    }
+
+                    var customPopup = "<b>Business Name: </b>" + businessInfo.businessName + "<br>" +
+                                      "<b>Email: </b>" + businessInfo.businessEmail + "<br>" +
+                                      "<b>Instagram: </b>" + businessInfo.instagramHandle + "<br>" +
+                                      "<b>Phone: </b>" + businessInfo.businessPhone + "<br>" +
+                                      "<b>Courses: </b>" + courses.join(', ');
+
+                    // Create a custom popup
+                    var customOptions =
+                    {
+                        'maxWidth': '500',
+                        'className' : 'custom'
+                    }
+
+                    L.marker([businessInfo.businessLocation.lat, businessInfo.businessLocation.lng]).addTo(map)
+                        .bindPopup(customPopup,customOptions);
+                }
+            });
+        };
+    </script>
+</body>
+</html>

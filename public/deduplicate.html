@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Deduplicate Firebase Entries</title>
+
+    <!-- Firebase Libraries -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+    <script>
+
+      // Your Firebase Config
+      var firebaseConfig = {
+            apiKey: "AIzaSyDKYTsPByglKMWhqrL_W-dSUHgDUXbm4Zg",
+            authDomain: "lightheartlashdb.firebaseapp.com",
+            databaseURL: "https://lightheartlashdb-default-rtdb.firebaseio.com",
+            projectId: "lightheartlashdb",
+            storageBucket: "lightheartlashdb.appspot.com",
+            messagingSenderId: "187026496730",
+            appId: "1:187026496730:web:686b35e7ccdda56d0bd9e3",
+            measurementId: "G-8GRD32LYV9"
+        };
+
+      // Initialize Firebase
+      const app = firebase.initializeApp(firebaseConfig);
+      const db = firebase.database(app);
+
+      async function removeDuplicates() {
+        const duplicates = {};
+        const dbRef = db.ref('/users/');
+        
+        dbRef.once('value', (snapshot) => {
+          const keysToRemove = [];
+          snapshot.forEach((childSnapshot) => {
+            const data = childSnapshot.val();
+            const { businessInfo } = data;
+            const { businessName, businessLocation } = businessInfo;
+            const key = businessName + "_" + JSON.stringify(businessLocation);
+            
+            if(duplicates[key]){
+              keysToRemove.push(childSnapshot.key);
+            } else {
+              duplicates[key] = true;
+            }
+          });
+
+          keysToRemove.forEach(key => {
+            db.ref('/users/' + key).remove();
+          });
+        });
+      }
+
+      window.removeDuplicates = removeDuplicates;
+
+    </script>
+  </head>
+  <body>
+    <button onclick="removeDuplicates()">Run Deduplication</button>
+  </body>
+</html>

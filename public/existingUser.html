@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./output.css">
+
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-database.js"></script>
+
+
+    <title>New User Register</title>
+
+</head>
+
+<body>
+    <!-- The Business Information Form -->
+    <div class="headerImgDiv">
+        <a href="https://www.lightheartlash.com">
+            <img class="newUserHeader" src="LH_MainLogo_Black.png" alt="Light Heart Lady">
+        </a>
+    </div>
+    <h1 class="headerStyle">Enter your business info into the form below.</h1>
+
+    <form id="businessForm" class="formContainer">
+
+        <label for="email" class="formLabel">Email: <p class="formNote">(Email Associated With Account *Required*)</p></label>
+        <input type="text" id="userEmail" name="email" class="formInput">
+
+       <!--- <label for="userPassword" class="formLabel">Password: <p class="formNote">(Create Password For Account)</p>
+            </label>
+        <input type="password" id="userPassword" name="userPassword" class="formInput"> -->
+
+        <label for="businessName" class="formLabel">Business Name:<p class="formNote">(*Required*)</p></label>
+        <input type="text" id="businessName" name="businessName" class="formInput">
+
+        <label for="instagramHandle" class="formLabel">Instagram Handle:<p class="formNote">(*Required*)</p></label>
+        <input type="text" id="instagramHandle" name="instagramHandle" class="formInput">
+
+        <label for="businessAddress" class="formLabel">Business Address:<p class="formNote">(*Required*)</p></label>
+        <input type="text" id="businessAddress" name="businessAddress" class="formInput">
+
+        <input type="submit" value="Submit" class="formSubmit" id="submit">
+    </form>
+
+</body>
+<script src="existingUserLog.js"></script>
+
+</html>

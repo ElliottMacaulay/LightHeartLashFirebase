@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./output.css">
+
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-database.js"></script>
+    
+    
+    <title>New User Register</title>
+
+</head>
+<body>
+     <!-- The Business Information Form -->
+     <div class="headerImgDiv">
+        <a href="https://www.lightheartlash.com">
+            <img class="newUserHeader" src="LH_MainLogo_Black.png" alt="Light Heart Lady">
+        </a>
+    </div>
+        <h1 class="headerStyle">No account was found with provided email.</h1>
+      <h1 class="subHeaderStyle">Please fill out the form below to proceed with your account.</h1>
+  
+      <form id="businessForm" class="formContainer">
+  
+        <label for="email" class="formLabel">Email: <p class="formNote"></p></label>
+        <label for="" id="googleEmailLabel"></label>
+
+        <!--<label for="userPassword" class="formLabel">Password:</label>
+        <input type="password" id="userPassword" name="userPassword" class="formInput"> -->
+  
+        <label for="businessName" class="formLabel">Business Name:</label>
+        <input type="text" id="businessName" name="businessName" class="formInput">
+    
+        <label for="website" class="formLabel">Website:</label>
+        <input type="text" id="website" name="website" class="formInput">
+    
+        <label for="instagramHandle" class="formLabel">Instagram Handle:</label>
+        <input type="text" id="instagramHandle" name="instagramHandle" class="formInput">
+      
+        <label for="businessAddress" class="formLabel">Business Address:</label>
+        <input type="text" id="businessAddress" name="businessAddress" class="formInput">
+  
+        <label for="secretCode" class="formLabel">Secret Code: <p class="formNote">(If you have taken an in-person class, input your secret code here, otherwise, leave empty)</p></label>
+        <input type="text" id="secretCode" name="secretCode" class="formInput">
+  
+    
+        <input type="submit" value="Submit" class="formSubmit" id="submit">
+      </form>
+    
+</body>
+<script src="googleLoginForm.js"></script>
+</html>

@@ -1,0 +1,107 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+.bodyStyle {
+    @apply h-screen m-0 p-0 relative bg-zinc-400;
+}
+  
+.overlayStyle {
+    @apply flex flex-col items-center justify-center px-2 py-2 rounded-xl shadow-xl w-4/5 max-w-md
+    bg-zinc-50 fixed top-3 left-1/2 transform -translate-x-1/2 z-10 transition-all duration-500 ease-in-out;
+}
+  
+.headerStyle {
+    @apply text-black text-center text-2xl;
+}
+  
+.mapStyle {
+    @apply w-full h-screen z-0 fixed ;
+}
+  
+.subHeaderStyle {
+    @apply text-black text-base text-center mt-2;
+}
+
+.arrowStyle {
+    @apply w-10 h-10 cursor-pointer transition-all duration-200 ease-in;
+}
+
+.arrowStyle:hover {
+    @apply w-12 h-12;
+}
+
+.hiddenText {
+    @apply text-center text-xl mt-2 transition-all duration-500 ease-in-out;
+}
+
+.buttonContainer {
+    @apply flex flex-row columns-2 justify-center px-4 py-6 rounded-xl shadow-xl 
+           bg-zinc-50 fixed bottom-3 left-1/2 transform -translate-x-1/2 z-10 transition-all duration-500 ease-in-out drop-shadow-lg;
+}
+
+.buttonStyle {
+    @apply bg-zinc-700 text-white px-4 py-2 rounded mx-2 transition-all duration-200 ease-in w-48 text-center flex justify-center items-center font-bold ;
+}
+
+.buttonStyle:hover {
+    @apply transform scale-110 drop-shadow-lg;
+}
+
+.businessName {
+    @apply font-bold ;
+}
+
+
+
+
+    .formContainer {
+      @apply max-w-md mx-auto p-6 bg-white rounded-lg shadow-xl mt-10;
+    }
+  
+    .formLabel {
+      @apply block text-sm font-medium text-gray-700 mt-4;
+    }
+  
+    .formInput {
+        @apply mt-1 block w-full rounded-md border-2 border-gray-300 bg-white shadow-sm;
+    }
+      
+    .formSubmit {
+        @apply mt-6 bg-zinc-600 hover:bg-zinc-700 text-white font-bold py-2 px-4 rounded cursor-pointer transition-transform duration-150 ease-in-out mx-auto block;
+    }
+    
+    .formSubmit:active {
+        @apply transform scale-90;
+    }
+      
+    .gotoMapButton {
+      @apply mt-6 block mx-auto bg-zinc-600 hover:bg-zinc-700 text-white font-bold py-2 px-4 rounded cursor-pointer;
+    }
+
+    .headerImgDiv {
+        @apply flex justify-center;
+    }
+    
+    .headerImg {
+        @apply w-64;
+    }
+    .formNote {
+        @apply font-thin;
+    }
+
+.buttonSection {
+    @apply fixed bottom-0 left-[75%] w-[25%] flex justify-center items-center bg-white p-4;
+}
+
+.buttonContainer {
+    @apply flex justify-center w-full;
+}
+
+.sidePanelButton {
+    @apply bg-[#746253] text-white px-4 py-2 rounded-lg shadow-lg hover:bg-[#5a4c41] transition-colors duration-300;
+}
+
+.sidePanelButton a {
+    @apply text-white no-underline font-bold;
+}

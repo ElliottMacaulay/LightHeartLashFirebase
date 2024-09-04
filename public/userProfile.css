@@ -1,0 +1,74 @@
+th{
+    text-align: left;
+}
+
+.headerLogo{
+    height: 8rem;
+    width: fit-content;
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+}
+
+@media (max-width: 800px) {
+    .headerLogo{
+        height: fit-content;
+        width: fit-content;
+        padding-top: 2rem;
+        padding-right: 4rem;
+        padding-left: 4rem;
+    }
+  }
+
+.imgSection{
+    display: flex;
+    justify-content: center;
+}
+
+.userInfoSection{
+    display: flex;
+    justify-content: center;
+}
+
+.userInfoDiv{
+    background-color: rgb(211, 191, 178) ;
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    display: flex;
+    border-radius: 1rem;
+    --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    max-width: 48rem;
+}
+
+td{
+    padding: 0.25rem 2rem;
+}
+tr{
+    margin: 1rem ;
+}
+/* userProfile.css */
+.table-cell-white {
+    background-color: white;
+    padding-left: 6px;
+    border: 1px solid black; /* Optional: add a border to separate cells */
+    border-radius:  .75rem;
+}
+
+#userInfoTbl {
+    border-collapse: separate; /* Ensures border-spacing is applied */
+    border-spacing: 0 10px; /* Adds vertical spacing between rows */
+}
+
+
+.welcomeText{
+display: flex;
+justify-content: center;
+/*font-family: cursive;*/
+font-size: 1.875rem;
+line-height: 2.25rem;
+padding-bottom: 1rem;
+
+}

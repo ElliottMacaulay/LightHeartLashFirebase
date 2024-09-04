@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="./output.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+    <title>Light Heart Certified Artist Map</title>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <!-- <script src="showSidebar.js"></script> -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier-Leaflet/0.2.6/oms.min.js"></script>
+
+</head>
+<!--
+      <body class="bodyStyle">
+        <div id="overlay" class="overlayStyle">
+        <h3 class="headerStyle">Find An Artist</h3>
+        <h4 class="subHeaderStyle">Tap a marker on the map to find a Light Heart Certified Artist near you.</h4>
+        
+        <div id="arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="arrowStyle">
+                <path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z" clip-rule="evenodd" />
+            </svg>
+        </div>
+        <p id="additionalText" class="hiddenText hidden">
+            Want to add your business to this map? Just log into any of your Light Heart courses and go to the lesson titled "Get On Our Map!"
+        </p>
+        </div>
+-->
+<!--Adding Legend *Edwin*-->
+<!--
+        <section>
+            <div class="overlayLegend">
+                <h1 class="legendHeader">Legend</h1>
+                <p class="legendParagraph">Uses Light Heart Products <img src="favorite_black_36dp.svg" alt="" class="imgLegend"></p>
+                <p class="legendParagraph">Does not use Light Heart Products</p>
+                <p class="legendParagraph">Light Heart Educator <img src="favorite_black_36dp.svg" alt="" class="imgLegend"></p>
+            </div>
+        </section>
+        -->
+<!--End adding Legend *Edwin*-->
+<!--
+        <div id="buttonContainer" class="buttonContainer ">
+            <a id="button1" href="https://lightheartlash.com/" class="buttonStyle ">Light Heart Lash Home Page</a>
+            <a id="button2" href="https://lightheartlash.com/my-courses/" class="buttonStyle ">Log In To Add Your Business</a>
+        </div>
+    -->
+<!-- The div element for the map -->
+
+<!-- Start Desktop View For Side Panel-->
+<aside>
+    <div class="buttonContainer">
+        <span>Over&nbsp;<span class="countHeader">0</span>&nbsp;Light Heart Artists Worldwide!</span>
+    </div>
+
+    <div id="mapid" class="mapStyle"></div>
+
+    <ul class="sideMapPanel">
+
+        <li>
+            <img class="sideMapPanelImg" src="LH_MainLogo_Black.png" alt="Light Heart Company Logo">
+        </li>
+
+        <li>
+            <!--
+                <p style="padding-top: 2rem; padding-left: 2rem;" class="text">Find an Artist</p> -->
+            <p class="sidePanelDescr">
+                * Want to add your business to this map? Just log into any of your Light Heart courses and go to the
+                lesson titled "Get On Our Map!"
+            </p>
+        </li>
+        <li>
+            <h1 class="legendHeader">Find An Artist</h1>
+            <p style="padding-left: 2rem; padding-bottom: 1rem; font-style: italic;">* Tap on map marker to find L.H
+                Certified Artist Near You! *</p>
+            <p class="legendParagraph"><img src="Sparkle_LH_Black.svg" alt="" class="imgLegend">&emsp;Uses Light
+                Heart Products</p>
+            <p class="legendParagraph"><img src="Shopping_Cart_LH.svg" alt="" class="imgLegend">&emsp;Retail Location</p>
+            <p class="legendParagraph"><img src="favorite_black_36dp.svg" alt="" class="imgLegend">&emsp;Certified Artist</p>
+        </li>
+        <li style="padding-top: 10px; padding-left: 1rem; padding-bottom: 1rem;"><b>Light Heart Certified Artists</b>
+        </li>
+
+        <section class="sidePanelInfoDisplay">
+            <div>
+                <ul class="displayInfoPane">
+                </ul>
+            </div>
+        </section>
+        <section class="buttonSection">
+            <a href="https://lightheartlashdb.web.app/userLogin.html" class="sidePanelButton">
+                Log In To Add Your Business
+            </a>
+        </section>
+    </ul>
+
+</aside>
+<!-- End Desktop View For Side Panel-->
+
+<!--Hamburger Menu button popup-->
+<ul class="menuButton">
+    <li onclick=showSidebar() class="menuButton">
+        <a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+                <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
+            </svg></a>
+    </li>
+</ul>
+
+<!--Side Panel Popup For Mobile View-->
+<ul class="sideMapPanelMobile">
+
+    <li onclick=hideSidebar()>
+        <a href="#" style=" padding-left: 10rem;"><svg xmlns="http://www.w3.org/2000/svg" height="24"
+                viewBox="0 -960 960 960" width="24">
+                <path
+                    d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+            </svg></a>
+    </li>
+
+    <li>
+        <img class="h-16 sm:h-32 my-16 mx-auto" src="LH_MainLogo_Black.png" alt="Light Heart Company Logo">
+    </li>
+
+    <li>
+        <p class="sidePanelDescr">
+            * Want to add your business to this map? Just log into any of your Light Heart courses and go to the lesson
+            titled "Get On Our Map!"
+        </p>
+    </li>
+
+    <li>
+        <h1 class="legendHeader">Find An Artist</h1>
+        <p style="padding-left: 2rem; padding-bottom: 1rem; font-style: italic;">* Tap on map marker to find L.H
+            Certified Artist Near You! *</p>
+        <p class="legendParagraph"><img src="Sparkle_LH_Black.svg" alt="" class="imgLegend">&emsp;Uses Light
+            Heart Products</p>
+        <p class="legendParagraph"><img src="Shopping_Cart_LH.svg" alt="" class="imgLegend">&emsp;Retail Location</p>
+        <p class="legendParagraph"><img src="favorite_black_36dp.svg" alt="" class="imgLegend">&emsp;Certified Artist</p>
+    </li>
+    <li style="padding-top: 10px; padding-left: 1rem; padding-bottom: 1rem;"><b>Light Heart Certified Artists</b>
+    </li>
+
+    <!--Displaying all users info-->
+    <section class="sidePanelInfoDisplayMobile">
+        <div>
+            <ul class="displayInfoPaneMobile">
+            </ul>
+        </div>
+    </section>
+
+    <!--Displaying all users info-->
+    <section class="buttonSection">
+        <a href="userLogin.html" class="sidePanelButton">
+            Log In To Add Your Business
+        </a>
+    </section>
+</ul>
+
+
+<script src="showSidebar.js"></script>
+
+
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin="">
+    </script>
+<script>
+
+    // Firebase configuration
+    // Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyDKYTsPByglKMWhqrL_W-dSUHgDUXbm4Zg",
+        authDomain: "lightheartlashdb.firebaseapp.com",
+        databaseURL: "https://lightheartlashdb-default-rtdb.firebaseio.com",
+        projectId: "lightheartlashdb",
+        storageBucket: "lightheartlashdb.appspot.com",
+        messagingSenderId: "187026496730",
+        appId: "1:187026496730:web:686b35e7ccdda56d0bd9e3",
+        measurementId: "G-8GRD32LYV9"
+    };
+
+
+    // Initialize Firebase
+    var app = firebase.initializeApp(firebaseConfig);
+    var database = firebase.database(app);
+
+    window.onload = function () {
+        var arrowElement = document.getElementById('arrow');
+
+        if (arrowElement) {
+            arrowElement.addEventListener('click', function () {
+                var additionalText = document.getElementById('additionalText');
+                var button1 = document.getElementById('button1');
+                var button2 = document.getElementById('button2');
+
+                if (additionalText.classList.contains('block')) {
+                    additionalText.classList.remove('block');
+                    additionalText.classList.add('hidden');
+                    button1.classList.remove('block');
+                    button1.classList.add('hidden');
+                    button2.classList.remove('block');
+                    button2.classList.add('hidden');
+
+                } else {
+                    additionalText.classList.remove('hidden');
+                    additionalText.classList.add('block');
+                    button1.classList.remove('hidden');
+                    button1.classList.add('block');
+                    button2.classList.remove('hidden');
+                    button2.classList.add('block');
+
+                }
+            });
+        } else {
+            console.log("'arrow' element not found in the DOM.");
+        }
+        // Initialize Leaflet map
+        var map = new L.map('mapid').setView([33.581391, -111.930714], 5);
+
+        // Initialize OverlappingMarkerSpiderfier
+        var oms = new OverlappingMarkerSpiderfier(map, { keepSpiderfied: true, nearbyDistance: 20 });
+
+        // Add OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Fetch users from Firebase and add markers to the map
+        var usersRef = firebase.database().ref('users');
+        usersRef.once('value').then(function (snapshot) {
+            var users = snapshot.val();
+            for (var userId in users) {
+                var user = users[userId];
+                var businessInfo = user.businessInfo;
+                var courses = user.courses;
+
+
+
+                // Check if user has geocoded coordinates
+                if (!businessInfo.businessLocation) {
+                    console.log(`No location data for user: ${userId}`);
+                    continue;
+                }
+
+                // Ensure the website starts with http://, https://, or www.
+                var websiteUrl = businessInfo.website;
+                if (!/^https?:\/\//i.test(websiteUrl)) {
+                    if (!/^www\./i.test(websiteUrl)) {
+                        websiteUrl = 'www.' + websiteUrl;
+                    }
+                    websiteUrl = 'http://' + websiteUrl;
+                }
+
+                var customPopup = "<div style='text-align:center; line-height:1.6;'><b style='font-size:20px;'>" + businessInfo.businessName + "</b><br>";
+
+                if (businessInfo.website) {
+                    var websiteUrl = businessInfo.website;
+                    // Ensure the website starts with http://, https://, or www.
+                    if (!/^https?:\/\//i.test(websiteUrl)) {
+                        if (!/^www\./i.test(websiteUrl)) {
+                            websiteUrl = 'www.' + websiteUrl;
+                        }
+                        websiteUrl = 'http://' + websiteUrl;
+                    }
+
+                    var displayedWebsiteUrl = websiteUrl.length > 30 ? websiteUrl.substr(0, 30) + '...' : websiteUrl;
+
+                    customPopup += "<b>Website: </b><a href='" + websiteUrl + "' target='_blank'>" + displayedWebsiteUrl + "</a><br>";
+                }
+
+                if (businessInfo.instagramHandle) {
+                    customPopup += "<b>Instagram: </b><a href='https://www.instagram.com/" + businessInfo.instagramHandle + "' target='_blank'>@" + businessInfo.instagramHandle + "</a><br>";
+                }
+
+                customPopup += "<b style='font-size:16px;'>Certifications: </b><br>" +
+                    "<span style='font-weight:bold;'>" + courses.join(', ') + "</span></div>";
+
+                // Create a custom popup
+                var customOptions =
+                {
+                    'maxWidth': '300',
+                    'className': 'custom'
+                }
+                var myIcon = L.icon({
+                    iconUrl: './favorite_black_36dp.svg',
+                    iconSize: [38, 95], // dimensions of the icon
+                    iconAnchor: [22, 60], // point of the icon which will correspond to marker's location
+                    popupAnchor: [-3, -25] // point from which the popup should open relative to the iconAnchor
+                });
+                var lhProducts = L.icon({
+                    iconUrl: './Sparkle_LH_Black.svg',
+                    iconSize: [38, 95], // dimensions of the icon
+                    iconAnchor: [22, 60], // point of the icon which will correspond to marker's location
+                    popupAnchor: [-3, -25] // point from which the popup should open relative to the iconAnchor
+                });
+
+                var lhRetail = L.icon({
+                    iconUrl: './Shopping_Cart_LH.svg',
+                    iconSize: [38, 95], // dimensions of the icon
+                    iconAnchor: [22, 60], // point of the icon which will correspond to marker's location
+                    popupAnchor: [-3, -25] // point from which the popup should open relative to the iconAnchor
+                });
+
+                // Create marker based on courses
+                var marker;
+                if (courses.includes("Retail Partner")) {
+                    marker = L.marker([businessInfo.businessLocation.lat, businessInfo.businessLocation.lng], { icon: lhRetail });
+                } else if (courses.length === 1 && courses[0] === "Uses Light Heart Products") {
+                    marker = L.marker([businessInfo.businessLocation.lat, businessInfo.businessLocation.lng], { icon: lhProducts });
+                } else {
+                    marker = L.marker([businessInfo.businessLocation.lat, businessInfo.businessLocation.lng], { icon: myIcon });
+                }
+
+                marker.bindPopup(customPopup, customOptions);
+                map.addLayer(marker);
+                oms.addMarker(marker);
+            }
+        });
+    };
+</script>
+</body>
+
+</html>

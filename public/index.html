@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="./output.css">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Enter Your Business Info</title>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCP3C00w3OjuhGFxT0fPwgp_KILuE4iiE"></script>
+
+
+  <!-- update the version number as needed -->
+  <script defer src="/__/firebase/9.22.0/firebase-app-compat.js"></script>
+  <!-- include only the Firebase features as you need -->
+  <script defer src="/__/firebase/9.22.0/firebase-auth-compat.js"></script>
+  <script defer src="/__/firebase/9.22.0/firebase-database-compat.js"></script>
+  <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+  <!-- Your form styling here -->
+
+</head>
+
+<body class="font-sans bg-gray-100">
+  <!-- The Business Information Form -->
+  <div class="headerImgDiv">
+    <a href="https://www.lightheartlash.com">
+      <img class="headerImg" src="LightHeartLogo 400px.png" alt="Light Heart Lady">
+    </a>
+  </div>
+  <h1 class="headerStyle">Enter your business info into the form below.</h1>
+  <h1 class="subHeaderStyle">If you are already listed on the map and your business info has changed, or you have
+    received new Light Heart certifications, just fill out this form again to update your info.</h1>
+
+  <form id="businessForm" class="formContainer">
+
+    <label for="email" class="formLabel">Email: <p class="formNote">(This won't be displayed, please use the same email
+        to make and update your listing if you need to change your information.)</p></label>
+    <input type="text" id="email" name="email" class="formInput">
+
+    <label for="businessName" class="formLabel">Business Name:</label>
+    <input type="text" id="businessName" name="businessName" class="formInput">
+
+    <label for="website" class="formLabel">Website:</label>
+    <input type="text" id="website" name="website" class="formInput">
+
+    <label for="instagramHandle" class="formLabel">Instagram Handle:</label>
+    <input type="text" id="instagramHandle" name="instagramHandle" class="formInput">
+
+    <label for="businessAddress" class="formLabel">Business Address:</label>
+    <input type="text" id="businessAddress" name="businessAddress" class="formInput">
+
+    <label for="secretCode" class="formLabel">Secret Code: <p class="formNote">(If you have taken an in-person class,
+        input your secret code here, otherwise, leave empty)</p></label>
+    <input type="text" id="secretCode" name="secretCode" class="formInput">
+
+
+    <input type="submit" value="Submit" class="formSubmit">
+  </form>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var urlParams = new URLSearchParams(window.location.search);
+      var coursesParam = urlParams.get('courses');
+      var courses = coursesParam ? coursesParam.split(',') : []; // Check if 'courses' parameter exists before splitting
+
+      var unwantedTexts = ["\\| Virtual Mini Course", "\\(Start Here First\\)", "Facebook Ads Mastery", "Light Heart Business Bundle", "Going Independent"];
+
+      var unwantedTextsRegex = new RegExp(unwantedTexts.join("|"), "g");
+
+      courses = courses.map(course => course.replace(unwantedTextsRegex, '').trim());
+      courses = courses.filter(course => course !== ""); // remove empty strings left over
+
+      var userId = urlParams.get('userId');
+
+      firebase.auth().signInAnonymously().catch(function (error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.error('Anonymous sign-in error', errorCode, errorMessage);
+      });
+
+
+      // The rest of your code...
+
+
+      if (!coursesParam) {
+        alert("It looks like your course info didn't get through, please go back to your course and try clicking the button again. If this problem persists, email info@lightheartlash.com. (If you have only taken an in person class, ignore this message and fill out the form below.)");
+      } else if (courses.length === 0) {
+        alert("It looks like your course info didn't get through, please go back to your course and try clicking the button again. If this problem persists, email info@lightheartlash.com (If you have only taken an in person class, ignore this message and fill out the form below.)");
+      }
+      var database = firebase.database();
+
+      var geocoder = new google.maps.Geocoder();
+
+      document.getElementById("businessForm").addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        // Sign in the user anonymously if not already signed in
+        var user = firebase.auth().currentUser;
+        if (!user) {
+          await firebase.auth().signInAnonymously().catch(function (error) {
+            console.error('Anonymous sign-in error', error);
+          });
+          user = firebase.auth().currentUser;
+        }
+
+        var email = document.getElementById("email").value;
+        var businessName = document.getElementById("businessName").value;
+        var website = document.getElementById("website").value;
+        var instagramHandle = document.getElementById("instagramHandle").value;
+        var businessAddress = document.getElementById("businessAddress").value;
+        var secretCode = document.getElementById("secretCode").value;
+
+        if (secretCode != 'megababe' && !userId) {
+          alert("Your submission failed, if you came from an online course, please go back and click the button again. If you input your secret code from your training, please check that there are no typos.")
+          return
+        }
+
+        if (secretCode === 'megababe') {
+          courses.push('Mega Volume Workshop (In-Person)');
+        }
+
+
+        // Remove "@" symbol from instagramHandle
+        instagramHandle = instagramHandle.replace(/@/g, '');
+
+
+        var businessInfo = {
+          businessName: businessName,
+          website: website,
+          instagramHandle: instagramHandle,
+          businessAddress: businessAddress,
+          userId: userId,
+          email: email
+        };
+
+        try {
+          var geocodeResult = await geocodeAddress(geocoder, businessAddress);
+          businessInfo.businessLocation = { lat: geocodeResult.lat(), lng: geocodeResult.lng() };
+
+          // Query the database by email
+          var query = firebase.database().ref('users').orderByChild('businessInfo/email').equalTo(email);
+          query.once('value', function (snapshot) {
+            if (snapshot.exists()) {
+              // If a record exists with the same email, update it
+              var userKey = Object.keys(snapshot.val())[0];
+              firebase.database().ref('users/' + userKey + '/businessInfo').set(businessInfo, function (error) {
+                if (error) {
+                  console.log('Failed with error: ', error);
+                } else {
+                  console.log('Data updated successfully!');
+                  alert("Your submission was successful!");  // Show confirmation message
+                }
+              });
+            } else {
+              // If no record exists with the same email, create a new one
+              var newPostKey = firebase.database().ref().child('users').push().key;
+              firebase.database().ref('users/' + newPostKey).set({
+                businessInfo: businessInfo,
+                courses: courses
+              }, function (error) {
+                if (error) {
+                  console.log('Failed with error: ', error);
+                } else {
+                  console.log('Data saved successfully!');
+                  alert("Your submission was successful!");  // Show confirmation message
+                }
+              });
+            }
+          });
+        } catch (error) {
+          console.error('Geocode was not successful for the following reason: ' + error);
+          alert("Please enter a valid address.");
+          return;
+        }
+      });
+
+
+      function geocodeAddress(geocoder, address) {
+        return new Promise((resolve, reject) => {
+          geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status === 'OK') {
+              resolve(results[0].geometry.location);
+            } else {
+              reject(status);
+            }
+          });
+        });
+      }
+
+    });
+  </script>
+  <div class="formContainer">
+    <button onclick="location.href='map.html'" type="button" class="gotoMapButton">Go to Map</button>
+  </div>
+</body>
+
+</html>

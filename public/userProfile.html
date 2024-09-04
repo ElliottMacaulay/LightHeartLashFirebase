@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+
+    <link rel="stylesheet" href="userProfile.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="getUserInfo.js"></script>
+
+
+</head>
+
+<body>
+
+    <section class="imgSection">
+        <div>
+            <img class="h-24 sm:h-32 my-16 mx-auto" src="LH_MainLogo_Black.png" alt="Light Heart Lash Logo">
+        </div>
+    </section>
+
+    <div>
+        <p class="welcomeText">
+            Welcome&nbsp<label id="headerBusName"></label>
+        </p>
+    </div>
+
+    <section class="userInfoSection">
+        <div class="userInfoDiv">
+
+            <form action="" id="userInfoDisplay">
+                <table id="userInfoTbl">
+                    <tr id="editHeader">
+                        <th></th>
+                        <td class="mb-2 text-sm text-red-500">* Click or Tap to edit *</td>
+                    </tr>
+                    <tr id="busNameRow">
+                        <th><label for="busName">Business Name:</label></th>
+                        <td id="businessName" class="table-cell-white"></td>
+                    </tr>
+
+                    <tr id="busAddressRow">
+                        <th><label for="busAddress">Business Address:&nbsp</label> </th>
+                        <td id="businessAddress" class="table-cell-white"></td>
+
+                    <tr id="userEmailRow">
+                        <th><label for="userEmail">Email: </label> </th>
+                        <td id="email" class="table-cell-white"><input type="email"></td>
+                    </tr>
+
+                    <tr id="instaHandleRow">
+                        <th><label for="instaHandle">Instagram:</label> </th>
+                        <td id="instagramHandle" class="table-cell-white"></td>
+                    </tr>
+
+                    <tr id="userWebsiteRow">
+                        <th><label for="userWebsite">Website:</label></th>
+                        <td id="website" class="table-cell-white"> </td>
+                    </tr>
+
+                    <tr id="authenticatedRow">
+                        <th>Authenticated<br>Courses:</th>
+                        <td id="courses"></td>
+                    </tr>
+
+                </table>
+
+                <div class="flex justify-center py-4 sm:justify-center">
+                    <label class="mt-7 -mr-1 sm:mt-7 sm:mr-0" for="newCourse">Add Code:</label>
+                    <input class="mt-5 ml-5 mr-2 w-44 sm:mt-6 rounded-lg" type="text" name="newCourse" id="newCourse" placeholder=" Enter Code">
+                    <input type="submit" id="submitSecretCode" value="Submit" class="bg-[#746253] rounded-xl text-white p-2 sm:py-2 hover:scale-105 duration-300 mt-5 ml-2">
+                </div>
+    
+                    <div class="flex justify-center pt-10 sm:justify-center">
+                    <button class="bg-[#746253] rounded-xl text-white p-3 hover:scale-105 duration-300 sm:p-4"><a href="map.html">Go To Map</a></button>
+                </div>
+            </form>
+
+        </div>
+
+    </section>
+    <script src="addNewCourse.js"></script>
+
+</body>
+
+</html>
